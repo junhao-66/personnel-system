@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.personnel.mapper.AttendanceRecordMapper">
+    <select id="selectDailyRecords" resultType="com.personnel.entity.AttendanceRecordDO">
+        WITH RECURSIVE dates AS (
+            SELECT CAST(#{startDate} AS DATE) AS day
+            UNION ALL SELECT DATE_ADD(day, INTERVAL 1 DAY) FROM dates WHERE day &lt; #{endDate}
+        )
+        SELECT a.id, COALESCE(a.enterprise_id, 1) AS enterprise_id, u.id AS user_id, dates.day AS attendance_date,
+            a.clock_in_time, a.clock_out_time, COALESCE(a.work_start_time, r.work_start_time) AS work_start_time,
+            COALESCE(a.work_end_time, r.work_end_time) AS work_end_time,
+            COALESCE(a.is_rest_day, CASE WHEN WEEKDAY(dates.day) &gt;= 5 THEN 1 ELSE 0 END) AS is_rest_day,
+            COALESCE(a.is_late, 0) AS is_late, COALESCE(a.is_early, 0) AS is_early
+        FROM dates CROSS JOIN sys_user u
+        LEFT JOIN employee_profile p ON p.user_id = u.id
+        LEFT JOIN attendance_record a ON a.user_id = u.id AND a.attendance_date = dates.day
+        INNER JOIN attendance_rule r ON r.id = 1
+        WHERE (a.id IS NOT NULL OR (u.audit_status = 'APPROVED' AND u.user_status = 'ENABLED'
+            AND p.employment_status = 'ACTIVE' AND dates.day &gt;= DATE(COALESCE(u.reviewed_at, u.create_time))
+            AND (p.hire_date IS NULL OR dates.day &gt;= p.hire_date)))
+        <if test="userId != null">AND u.id = #{userId}</if>
+        <if test="keyword != null and keyword != ''">AND (LOCATE(#{keyword}, u.user_name) &gt; 0 OR LOCATE(#{keyword}, u.real_name) &gt; 0)</if>
+        <if test="departmentId != null">AND u.department_id = #{departmentId}</if>
+        ORDER BY dates.day DESC, u.id DESC
+    </select>
+    <sql id="recordColumns">
+        a.id, a.enterprise_id, a.user_id, a.attendance_date, a.clock_in_time, a.clock_out_time,
+        a.work_start_time, a.work_end_time, a.is_rest_day, a.is_late, a.is_early
+    </sql>
+    <select id="selectToday" resultType="com.personnel.entity.AttendanceRecordDO">
+        SELECT <include refid="recordColumns"/> FROM attendance_record a
+        WHERE a.user_id = #{userId} AND a.attendance_date = #{date}
+    </select>
+    <update id="clockOut">
+        UPDATE attendance_record SET clock_out_time = #{time}, is_early = #{early}
+        WHERE user_id = #{userId} AND attendance_date = #{date}
+          AND clock_out_time IS NULL AND clock_in_time &lt;= #{time}
+    </update>
+    <select id="selectRecords" resultType="com.personnel.entity.AttendanceRecordDO">
+        SELECT <include refid="recordColumns"/> FROM attendance_record a
+        INNER JOIN sys_user u ON u.id = a.user_id
+        WHERE a.attendance_date BETWEEN #{startDate} AND #{endDate}
+        <if test="userId != null">AND a.user_id = #{userId}</if>
+        <if test="keyword != null and keyword != ''">
+            AND (LOCATE(#{keyword}, u.user_name) &gt; 0 OR LOCATE(#{keyword}, u.real_name) &gt; 0)
+        </if>
+        <if test="departmentId != null">AND u.department_id = #{departmentId}</if>
+        ORDER BY a.attendance_date DESC, a.id DESC
+    </select>
+</mapper>

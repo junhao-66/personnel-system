@@ -1,0 +1,327 @@
+{
+  "upstreamCommit": "4d7917df1857e2dc04adc47fab3ecc0c8db10612",
+  "license": "CC BY-NC-SA 4.0",
+  "source": "https://github.com/openjung/core/blob/4d7917df1857e2dc04adc47fab3ecc0c8db10612/src/questions.ts",
+  "questions": [
+    {
+      "id": 1,
+      "dimension": "JP",
+      "title": "你如何记录任务？",
+      "leftText": "制定清单",
+      "rightText": "依靠记忆",
+      "titleEn": "How do you track tasks?",
+      "leftEn": "Makes lists",
+      "rightEn": "Relies on memory"
+    },
+    {
+      "id": 2,
+      "dimension": "TF",
+      "title": "你如何看待新信息？",
+      "leftText": "愿意相信",
+      "rightText": "持怀疑态度",
+      "titleEn": "How do you approach new information?",
+      "leftEn": "Wants to believe",
+      "rightEn": "Skeptical"
+    },
+    {
+      "id": 3,
+      "dimension": "EI",
+      "title": "你对独处有什么感受？",
+      "leftText": "独处时感到无聊",
+      "rightText": "需要独处时间",
+      "titleEn": "How do you feel about being alone?",
+      "leftEn": "Bored by time alone",
+      "rightEn": "Needs time alone"
+    },
+    {
+      "id": 4,
+      "dimension": "SN",
+      "title": "你如何看待现状？",
+      "leftText": "接受事物的本来面目",
+      "rightText": "对现状不满足",
+      "titleEn": "How do you view the status quo?",
+      "leftEn": "Accepts things as they are",
+      "rightEn": "Unsatisfied with the way things are"
+    },
+    {
+      "id": 5,
+      "dimension": "JP",
+      "title": "你如何整理空间？",
+      "leftText": "保持房间整洁",
+      "rightText": "随手放置东西",
+      "titleEn": "How do you organize your space?",
+      "leftEn": "Keeps a clean room",
+      "rightEn": "Just puts stuff wherever"
+    },
+    {
+      "id": 6,
+      "dimension": "TF",
+      "title": "你如何看待逻辑思维？",
+      "leftText": "认为\"像机器人\"是侮辱",
+      "rightText": "追求机械般的思维",
+      "titleEn": "How do you view logical thinking?",
+      "leftEn": "Thinks \"robotic\" is an insult",
+      "rightEn": "Strives to have a mechanical mind"
+    },
+    {
+      "id": 7,
+      "dimension": "EI",
+      "title": "你的能量状态如何？",
+      "leftText": "精力充沛",
+      "rightText": "平静温和",
+      "titleEn": "What is your energy level like?",
+      "leftEn": "Energetic",
+      "rightEn": "Mellow"
+    },
+    {
+      "id": 8,
+      "dimension": "SN",
+      "title": "你喜欢什么类型的考试？",
+      "leftText": "喜欢选择题",
+      "rightText": "喜欢论述题",
+      "titleEn": "What type of test do you prefer?",
+      "leftEn": "Prefers multiple choice test",
+      "rightEn": "Prefers essay answers"
+    },
+    {
+      "id": 9,
+      "dimension": "JP",
+      "title": "你如何形容自己的生活方式？",
+      "leftText": "有条理",
+      "rightText": "随性混乱",
+      "titleEn": "How would you describe your lifestyle?",
+      "leftEn": "Organized",
+      "rightEn": "Chaotic"
+    },
+    {
+      "id": 10,
+      "dimension": "TF",
+      "title": "你如何应对批评？",
+      "leftText": "容易受伤",
+      "rightText": "脸皮厚",
+      "titleEn": "How do you handle criticism?",
+      "leftEn": "Easily hurt",
+      "rightEn": "Thick-skinned"
+    },
+    {
+      "id": 11,
+      "dimension": "EI",
+      "title": "你在什么环境下工作最好？",
+      "leftText": "在团队中表现最佳",
+      "rightText": "独自工作表现最佳",
+      "titleEn": "How do you work best?",
+      "leftEn": "Works best in groups",
+      "rightEn": "Works best alone"
+    },
+    {
+      "id": 12,
+      "dimension": "SN",
+      "title": "你的时间焦点在哪里？",
+      "leftText": "关注过去",
+      "rightText": "关注未来",
+      "titleEn": "Where is your focus in time?",
+      "leftEn": "Focused on the past",
+      "rightEn": "Focused on the future"
+    },
+    {
+      "id": 13,
+      "dimension": "JP",
+      "title": "你何时制定计划？",
+      "leftText": "提前规划",
+      "rightText": "最后一刻才计划",
+      "titleEn": "When do you make plans?",
+      "leftEn": "Plans far ahead",
+      "rightEn": "Plans at the last minute"
+    },
+    {
+      "id": 14,
+      "dimension": "TF",
+      "title": "你希望从他人那里得到什么？",
+      "leftText": "渴望他人的爱",
+      "rightText": "渴望他人的尊重",
+      "titleEn": "What do you seek from others?",
+      "leftEn": "Wants people's love",
+      "rightEn": "Wants people's respect"
+    },
+    {
+      "id": 15,
+      "dimension": "EI",
+      "title": "聚会让你感觉如何？",
+      "leftText": "因聚会而兴奋",
+      "rightText": "因聚会而疲惫",
+      "titleEn": "How do parties make you feel?",
+      "leftEn": "Gets fired up by parties",
+      "rightEn": "Gets worn out by parties"
+    },
+    {
+      "id": 16,
+      "dimension": "SN",
+      "title": "在群体中，你倾向于...",
+      "leftText": "融入群体",
+      "rightText": "与众不同",
+      "titleEn": "In a group, do you tend to...",
+      "leftEn": "Fits in",
+      "rightEn": "Stands out"
+    },
+    {
+      "id": 17,
+      "dimension": "JP",
+      "title": "你如何做决定？",
+      "leftText": "做出承诺",
+      "rightText": "保留选择",
+      "titleEn": "How do you approach decisions?",
+      "leftEn": "Commits",
+      "rightEn": "Keeps options open"
+    },
+    {
+      "id": 18,
+      "dimension": "TF",
+      "title": "你想擅长什么？",
+      "leftText": "想擅长帮助他人",
+      "rightText": "想擅长修理事物",
+      "titleEn": "What would you like to be good at?",
+      "leftEn": "Wants to be good at fixing people",
+      "rightEn": "Wants to be good at fixing things"
+    },
+    {
+      "id": 19,
+      "dimension": "EI",
+      "title": "在交谈中，你更倾向于...",
+      "leftText": "话比较多",
+      "rightText": "更善于倾听",
+      "titleEn": "In conversations, do you...",
+      "leftEn": "Talks more",
+      "rightEn": "Listens more"
+    },
+    {
+      "id": 20,
+      "dimension": "SN",
+      "title": "讲故事时，你会...",
+      "leftText": "描述发生了什么",
+      "rightText": "描述这意味着什么",
+      "titleEn": "When telling a story, do you...",
+      "leftEn": "Describes what happened",
+      "rightEn": "Describes what it meant"
+    },
+    {
+      "id": 21,
+      "dimension": "JP",
+      "title": "你何时完成任务？",
+      "leftText": "立即完成工作",
+      "rightText": "拖延",
+      "titleEn": "When do you complete tasks?",
+      "leftEn": "Gets work done right away",
+      "rightEn": "Procrastinates"
+    },
+    {
+      "id": 22,
+      "dimension": "TF",
+      "title": "你如何做决定？",
+      "leftText": "跟随内心",
+      "rightText": "跟随理性",
+      "titleEn": "How do you make decisions?",
+      "leftEn": "Follows the heart",
+      "rightEn": "Follows the head"
+    },
+    {
+      "id": 23,
+      "dimension": "EI",
+      "title": "周末你更喜欢做什么？",
+      "leftText": "喜欢外出活动",
+      "rightText": "喜欢待在家里",
+      "titleEn": "What do you prefer on weekends?",
+      "leftEn": "Goes out on the town",
+      "rightEn": "Stays at home"
+    },
+    {
+      "id": 24,
+      "dimension": "SN",
+      "title": "学习新事物时，你想要什么？",
+      "leftText": "想要细节",
+      "rightText": "想要大局观",
+      "titleEn": "When learning something new, what do you want?",
+      "leftEn": "Wants the details",
+      "rightEn": "Wants the big picture"
+    },
+    {
+      "id": 25,
+      "dimension": "JP",
+      "title": "你如何应对新情况？",
+      "leftText": "提前准备",
+      "rightText": "即兴发挥",
+      "titleEn": "How do you handle new situations?",
+      "leftEn": "Prepares",
+      "rightEn": "Improvises"
+    },
+    {
+      "id": 26,
+      "dimension": "TF",
+      "title": "道德的基础是什么？",
+      "leftText": "道德基于同情",
+      "rightText": "道德基于正义",
+      "titleEn": "What is morality based on?",
+      "leftEn": "Bases morality on compassion",
+      "rightEn": "Bases morality on justice"
+    },
+    {
+      "id": 27,
+      "dimension": "EI",
+      "title": "你的自然音量如何？",
+      "leftText": "自然而然大声说话",
+      "rightText": "很难大声喊叫",
+      "titleEn": "How loud is your natural voice?",
+      "leftEn": "Yelling comes naturally",
+      "rightEn": "Finds it difficult to yell loudly"
+    },
+    {
+      "id": 28,
+      "dimension": "SN",
+      "title": "你如何获取知识？",
+      "leftText": "经验主义",
+      "rightText": "理论主义",
+      "titleEn": "How do you approach knowledge?",
+      "leftEn": "Empirical",
+      "rightEn": "Theoretical"
+    },
+    {
+      "id": 29,
+      "dimension": "JP",
+      "title": "什么更能驱动你？",
+      "leftText": "努力工作",
+      "rightText": "尽情玩乐",
+      "titleEn": "What drives you more?",
+      "leftEn": "Works hard",
+      "rightEn": "Plays hard"
+    },
+    {
+      "id": 30,
+      "dimension": "TF",
+      "title": "你如何看待情感？",
+      "leftText": "重视情感",
+      "rightText": "对情感感到不自在",
+      "titleEn": "How do you relate to emotions?",
+      "leftEn": "Values emotions",
+      "rightEn": "Uncomfortable with emotions"
+    },
+    {
+      "id": 31,
+      "dimension": "EI",
+      "title": "你对成为焦点有什么感受？",
+      "leftText": "喜欢表演",
+      "rightText": "避免公开演讲",
+      "titleEn": "How do you feel about being in the spotlight?",
+      "leftEn": "Likes to perform",
+      "rightEn": "Avoids public speaking"
+    },
+    {
+      "id": 32,
+      "dimension": "SN",
+      "title": "什么问题最让你感兴趣？",
+      "leftText": "想知道\"谁/什么/何时\"",
+      "rightText": "想知道\"为什么\"",
+      "titleEn": "What questions interest you most?",
+      "leftEn": "Likes to know \"who/what/when\"",
+      "rightEn": "Likes to know \"why\""
+    }
+  ]
+}

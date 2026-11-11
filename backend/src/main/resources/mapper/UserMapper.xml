@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.personnel.mapper.UserMapper">
+    <select id="selectEnabledAdminIdsForUpdate" resultType="long" flushCache="true">
+        SELECT id FROM sys_user WHERE role_code = 'ADMIN' AND audit_status = 'APPROVED'
+        AND user_status = 'ENABLED' ORDER BY id FOR UPDATE
+    </select>
+    <select id="lockUser" resultType="long">SELECT id FROM sys_user WHERE id = #{id} FOR UPDATE</select>
+    <select id="selectEmployeePage" resultType="com.personnel.entity.UserDO">
+        SELECT u.id, u.user_name, u.real_name, u.phone, u.role_code, u.audit_status,
+               u.user_status, u.department_id, u.position_id, u.create_time, u.update_time
+        FROM sys_user u
+        LEFT JOIN employee_profile p ON p.user_id = u.id
+        WHERE u.audit_status = 'APPROVED'
+        <if test="keyword != null and keyword != ''">
+            AND (LOCATE(#{keyword}, u.user_name) &gt; 0 OR LOCATE(#{keyword}, u.real_name) &gt; 0
+                 OR LOCATE(#{keyword}, u.phone) &gt; 0)
+        </if>
+        <if test="departmentId != null">AND u.department_id = #{departmentId}</if>
+        <if test="employmentStatus != null">
+            AND COALESCE(p.employment_status, 'ACTIVE') = #{employmentStatus}
+        </if>
+        ORDER BY u.create_time DESC, u.id DESC
+    </select>
+</mapper>

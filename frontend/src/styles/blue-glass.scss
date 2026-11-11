@@ -1,0 +1,547 @@
+/* Blue glass visual system, following the user's FundFlow reference.
+ * Craft workflow: unslop by Damir Sokolovsky (@heydamir), CC BY 4.0.
+ * https://github.com/heydamir/unslop
+ * User-selected blue gradients and glass supersede skill defaults.
+ */
+:root {
+  --glass-panel: rgb(244 249 255 / 48%);
+  --glass-line: rgb(255 255 255 / 40%);
+  --glass-shadow: inset 0 1px 0 rgb(255 255 255 / 28%), 0 4px 12px rgb(51 73 112 / 3%);
+  --el-color-primary-light-7: #a7b8d4;
+  --el-color-primary-light-8: #cbd8eb;
+  --el-fill-color-lighter: rgb(255 255 255 / 16%);
+  --el-bg-color-overlay: #edf3fc;
+  --el-bg-color: #edf3fc;
+}
+
+:root .hr-shell.hr-shell {
+  --el-color-primary-light-7: #a7b8d4;
+  --el-color-primary-light-8: #cbd8eb;
+  --el-fill-color-blank: transparent;
+}
+
+:root .hr-shell .main-content > main {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+:root .hr-shell .page-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+:root .hr-shell .page-heading h1 {
+  margin: 0 0 4px;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+:root .hr-shell .page-heading p {
+  max-width: 65ch;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+:root .hr-shell .eyebrow {
+  display: none;
+}
+
+:root .hr-shell .el-card {
+  min-width: 0;
+  border: 1px solid var(--glass-line);
+  border-radius: 20px;
+  background: var(--glass-panel);
+  box-shadow: var(--glass-shadow);
+}
+
+:root .hr-shell .el-card__body {
+  padding: 20px;
+}
+
+:root .hr-shell .el-card__header {
+  padding: 16px 20px;
+  border-color: rgb(255 255 255 / 28%);
+}
+
+:root .hr-shell .el-table {
+  --el-table-bg-color: transparent;
+  --el-table-tr-bg-color: transparent;
+  --el-table-expanded-cell-bg-color: rgb(255 255 255 / 20%);
+  --el-table-header-bg-color: transparent;
+  --el-table-row-hover-bg-color: rgb(255 255 255 / 28%);
+  --el-table-border-color: rgb(255 255 255 / 28%);
+  --el-table-fixed-left-column: #d6e1ef;
+  --el-table-fixed-right-column: #d6e1ef;
+  font-size: 14px;
+}
+
+:root .hr-shell .el-table th.el-table__cell {
+  padding: 8px 0;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+:root .hr-shell .el-table td.el-table__cell {
+  padding: 8px 0;
+}
+
+:root .hr-shell .el-table .el-scrollbar__wrap {
+  max-height: max(200px, calc(100dvh - 400px));
+}
+
+:root .hr-shell .el-input__wrapper,
+:root .hr-shell .el-select__wrapper,
+:root .hr-shell .el-textarea__inner {
+  min-height: 36px;
+  border-radius: 12px;
+  background: rgb(247 250 255 / 42%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 40%);
+}
+
+:root .hr-shell .el-input__wrapper.is-focus,
+:root .hr-shell .el-select__wrapper.is-focused,
+:root .hr-shell .el-textarea__inner:focus {
+  box-shadow:
+    inset 0 0 0 1px #5878c2,
+    0 0 0 2px rgb(67 100 180 / 12%);
+}
+
+:root .hr-shell .el-form-item {
+  margin-bottom: 16px;
+}
+
+:root .hr-shell .el-form-item__label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  padding-bottom: 4px;
+}
+
+:root .el-select__popper,
+:root .el-picker__popper,
+:root .el-dropdown__popper {
+  --el-bg-color-overlay: #edf3fc;
+  --el-fill-color-blank: #edf3fc;
+}
+
+:root .el-dialog,
+:root .el-message-box,
+:root .el-drawer {
+  --el-bg-color: #edf3fc;
+  --el-drawer-bg-color: #edf3fc;
+  background: #edf3fc;
+}
+
+:root .el-dialog .el-input__wrapper,
+:root .el-dialog .el-select__wrapper,
+:root .el-drawer .el-input__wrapper {
+  background: #f7faff;
+}
+
+:root .hr-shell .el-button {
+  min-height: 36px;
+  padding: 8px 16px;
+  box-shadow: none;
+}
+
+:root .hr-shell .el-button.is-link,
+:root .hr-shell .el-button.is-text {
+  min-height: 24px;
+  padding: 0 4px;
+}
+
+:root .hr-shell .el-button--primary.is-link {
+  background: transparent;
+  color: #284981;
+}
+
+:root .hr-shell .el-button + .el-button {
+  margin-left: 8px;
+}
+
+:root .hr-shell .el-tag {
+  padding: 0 8px;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+:root .hr-shell .el-pagination {
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+:root .hr-shell .pagination-wrap,
+:root .hr-shell .table-footer,
+:root .hr-shell .pagination {
+  margin-top: 16px;
+}
+
+:root .hr-shell .section-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 16px;
+  padding: 4px;
+  background: rgb(255 255 255 / 20%);
+  border: 1px solid rgb(255 255 255 / 24%);
+  border-radius: 24px;
+}
+
+:root .hr-shell .section-navigation > a,
+:root .hr-shell .section-navigation > button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 4px 16px;
+  border: 0;
+  border-radius: 20px;
+  color: #3d506b;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 200ms var(--ease-out),
+    color 200ms var(--ease-out);
+}
+
+:root .hr-shell .section-navigation > [aria-pressed='true'],
+:root .hr-shell .section-navigation > [aria-current='page'] {
+  background: #192334;
+  color: #fff;
+}
+
+:root .hr-shell .section-navigation > :hover {
+  background: rgb(255 255 255 / 36%);
+  color: #17243a;
+}
+
+:root .hr-shell .metrics {
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+:root .hr-shell .metrics > .el-card .el-card__body {
+  padding: 16px;
+}
+
+:root .hr-shell .type-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+:root .hr-shell .panel,
+:root .hr-shell .leave-panel,
+:root .hr-shell .record-panel {
+  margin-bottom: 16px;
+}
+
+:root .hr-shell details {
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--text-secondary);
+}
+
+:root .hr-shell summary {
+  cursor: pointer;
+}
+
+:root .hr-shell .search-form .el-form-item {
+  margin-bottom: 0;
+}
+
+@media (max-width: 760px) {
+  :root .hr-shell .page-heading h1 {
+    font-size: 20px;
+    line-height: 28px;
+  }
+  :root .hr-shell .el-card__body {
+    padding: 16px;
+  }
+  :root .hr-shell .type-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  :root .hr-shell .section-navigation > a,
+  :root .hr-shell .section-navigation > button {
+    padding-inline: 12px;
+  }
+}
+:root .hr-shell .mbti-module .module-heading {
+  margin-bottom: 16px;
+}
+:root .hr-shell .mbti-module .module-heading h1 {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 500;
+  margin: 0 0 4px;
+}
+:root .hr-shell .mbti-module .module-history {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 8px 16px;
+  background: #192334;
+  color: #fff;
+  border-radius: 24px;
+  font-size: 12px;
+}
+:root .hr-shell .mbti-atlas-panel {
+  padding: 20px;
+  border-radius: 24px;
+  background: var(--glass-panel);
+  border: 1px solid var(--glass-line);
+}
+:root .hr-shell .atlas-topline,
+:root .hr-shell .atlas-bottomline {
+  display: none;
+}
+:root .hr-shell .atlas-stage {
+  min-height: 320px;
+  gap: 24px;
+  padding: 12px 0;
+}
+:root .hr-shell .atlas-character .personality-image {
+  height: clamp(240px, 38dvh, 340px);
+  border-radius: 20px;
+}
+:root .hr-shell .atlas-insight {
+  margin-top: 20px;
+}
+:root .hr-shell .atlas-disclaimer {
+  margin-top: 12px;
+  color: var(--text-secondary);
+}
+:root .hr-shell .atlas-profile .atlas-code {
+  font-size: 48px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+:root .hr-shell .atlas-axis {
+  margin-bottom: 16px;
+}
+:root .hr-shell .atlas-type-selector {
+  padding: 12px 0 0;
+}
+:root .hr-shell .atlas-traits,
+:root .hr-shell .axis-label,
+:root .hr-shell .atlas-switch-note {
+  color: var(--text-secondary);
+}
+:root .hr-shell .search-actions {
+  margin-bottom: 0;
+}
+:root .hr-shell .record-filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px 12px;
+}
+:root .hr-shell .record-filters .el-form-item {
+  margin: 0;
+}
+:root .hr-shell .records-heading {
+  margin-bottom: 12px;
+}
+:root .hr-shell .records-heading h2 {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  margin: 0;
+}
+:root .hr-shell .attendance-row-detail {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding: 12px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 20px;
+}
+:root .hr-shell .attendance-row-detail dt {
+  color: var(--text-secondary);
+}
+:root .hr-shell .attendance-row-detail dd {
+  margin: 4px 0 0;
+  color: var(--text-primary);
+}
+:root .hr-shell .types {
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 12px;
+}
+@media (max-width: 900px) {
+  :root .hr-shell .types {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  :root .hr-shell .record-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 760px) {
+  :root .hr-shell .atlas-stage {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    min-height: 0;
+  }
+  :root .hr-shell .atlas-character .personality-image {
+    height: 280px;
+  }
+  :root .hr-shell .atlas-character {
+    grid-row: 2;
+  }
+  :root .hr-shell .attendance-row-detail {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  :root .hr-shell .record-filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+:root .hr-shell .talent-statistics .panel {
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+:root .hr-shell .talent-statistics .metrics {
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+:root .hr-shell .talent-statistics .metric {
+  background: var(--glass-panel);
+  border-color: var(--glass-line);
+  padding: 16px;
+  gap: 8px;
+}
+:root .hr-shell .talent-statistics .metric strong {
+  font-size: 28px;
+  line-height: 32px;
+  font-weight: 500;
+}
+:root .hr-shell .talent-statistics .metric small {
+  font-size: 12px;
+  line-height: 16px;
+}
+:root .hr-shell .talent-statistics .panel h2 {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+}
+:root .hr-shell .talent-statistics .type-item {
+  padding: 12px;
+  gap: 8px;
+  background: rgb(255 255 255 / 20%);
+}
+:root .hr-shell .department-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+:root .hr-shell .department-section-heading p {
+  margin: 0;
+}
+:root .hr-shell .attendance-page .records-panel {
+  margin-bottom: 0;
+}
+:root .hr-shell .record-filters .filter-actions {
+  margin-bottom: 0;
+}
+:root .hr-shell .personality-visual {
+  background: transparent;
+}
+:root .hr-shell .personality-image {
+  mix-blend-mode: multiply;
+}
+:root .hr-shell .atlas-switch-note {
+  margin: 12px 0;
+  padding-top: 8px;
+}
+:root .hr-shell .atlas-axis {
+  margin-bottom: 12px;
+}
+:root .hr-shell .atlas-kicker {
+  margin-bottom: 12px;
+}
+:root .hr-shell .axis-label {
+  margin-bottom: 4px;
+}
+:root .hr-shell .atlas-profile h3 {
+  margin-bottom: 8px;
+}
+:root .hr-shell .atlas-traits {
+  margin-bottom: 12px;
+}
+:root .hr-shell .atlas-type-selector button {
+  color: #526580;
+  border-radius: 8px;
+}
+:root .hr-shell .atlas-type-selector button[aria-pressed='true'] {
+  background: rgb(255 255 255 / 48%);
+  border-color: transparent;
+  color: #1b3257;
+}
+:root .hr-shell .admin-page .page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+:root .hr-shell .admin-page .page-header h1 {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 500;
+  margin: 0 0 4px;
+}
+:root .hr-shell .admin-page .page-header p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-secondary);
+}
+:root .hr-shell .talent-statistics .el-card__body {
+  padding: 16px;
+}
+:root .hr-shell .talent-statistics .metric {
+  padding: 12px;
+}
+:root .hr-shell .talent-statistics .el-table td.el-table__cell {
+  padding: 4px 0;
+}
+:root .hr-shell .talent-statistics .el-table th.el-table__cell {
+  padding: 4px 0;
+}
+:root .hr-shell .talent-statistics .page-heading {
+  margin-bottom: 16px;
+}
+:root .hr-shell .talent-statistics .section-navigation {
+  margin-bottom: 12px;
+}
+:root .hr-shell .talent-statistics .filter-form .el-form-item {
+  margin-bottom: 0;
+}
+:root .hr-shell .talent-statistics .filter-form .filter-actions {
+  margin-bottom: 0;
+}
+@media (max-width: 1199px) {
+  :root .hr-shell .talent-statistics .filter-form {
+    gap: 12px;
+  }
+}
+:root .hr-shell .dashboard-page:not(.talent-statistics) .page-heading {
+  margin-bottom: 12px;
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.personnel.mapper.AssessmentScaleMapper">
+    <update id="publishDraft">
+        UPDATE assessment_scale SET status = 'PUBLISHED', published_by = #{adminId}, published_at = #{now}, update_time = #{now}
+        WHERE id = #{id} AND status = 'DRAFT'
+    </update>
+    <update id="archivePublished">
+        UPDATE assessment_scale SET status = 'ARCHIVED', update_time = #{now} WHERE id = #{id} AND status = 'PUBLISHED'
+    </update>
+</mapper>

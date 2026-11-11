@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.personnel.mapper.AssessmentSessionMapper">
+    <select id="selectForUpdate" resultType="com.personnel.entity.AssessmentSessionDO">
+        SELECT id, enterprise_id, user_id, scale_id, scale_snapshot, content_hash, status, revision,
+        answers_json, result_json, consent_at, submitted_at, create_time, update_time
+        FROM assessment_session WHERE id = #{id} FOR UPDATE
+    </select>
+    <update id="saveDraft">
+        UPDATE assessment_session SET answers_json = #{answers}, revision = revision + 1, update_time = #{now}
+        WHERE id = #{id} AND status = 'DRAFT' AND revision = #{revision}
+    </update>
+    <update id="completeDraft">
+        UPDATE assessment_session SET answers_json = #{answers}, result_json = #{result}, status = 'COMPLETED',
+        revision = revision + 1, submitted_at = #{now}, update_time = #{now}
+        WHERE id = #{id} AND status = 'DRAFT' AND revision = #{revision}
+    </update>
+</mapper>

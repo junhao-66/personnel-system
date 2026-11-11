@@ -1,0 +1,30 @@
+// ============================================================
+// 基础 Reset —— 仅保留结构性重置，颜色与主题统一由 design-tokens 管理。
+// ============================================================
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#app {
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+}
+html {
+  scroll-behavior: smooth;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}

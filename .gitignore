@@ -1,0 +1,34 @@
+# Local configuration and secrets
+backend/src/main/resources/application-local.yml
+.env
+.env.*
+!.env.example
+
+# Dependencies and build output
+frontend/node_modules/
+frontend/dist/
+backend/target/
+*.class
+*.tsbuildinfo
+
+# Runtime and generated files
+output/
+*.log
+*.pid
+frontend/audit-all-pages/
+frontend/*-desktop.png
+frontend/*-mobile.png
+frontend/section-capsule-*.png
+
+# Local tools and editor state
+.workbuddy/
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Temporary QA helpers
+frontend/all-pages-layout-audit.cjs
+frontend/section-capsule-qa.cjs
+frontend/design-qa.md

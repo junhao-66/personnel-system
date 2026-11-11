@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.personnel.mapper.TalentDashboardMapper">
+    <!-- MySQL 8: rank after excluding drafts and invalid snapshots. A single row per user prevents join inflation. -->
+    <sql id="latestAssessments">
+        WITH extracted_results AS (
+            SELECT s.id, s.user_id, s.submitted_at,
+                JSON_UNQUOTE(JSON_EXTRACT(CASE WHEN JSON_VALID(s.result_json) THEN s.result_json ELSE NULL END, '$.typeCode')) AS type_code,
+                JSON_UNQUOTE(JSON_EXTRACT(CASE WHEN JSON_VALID(s.result_json) THEN s.result_json ELSE NULL END, '$.scaleName')) AS scale_name,
+                JSON_UNQUOTE(JSON_EXTRACT(CASE WHEN JSON_VALID(s.result_json) THEN s.result_json ELSE NULL END, '$.scaleVersion')) AS scale_version,
+                JSON_UNQUOTE(JSON_EXTRACT(CASE WHEN JSON_VALID(s.result_json) THEN s.result_json ELSE NULL END, '$.scoringVersion')) AS scoring_version
+            FROM assessment_session s
+            WHERE s.enterprise_id = 1 AND s.status = 'COMPLETED' AND s.submitted_at IS NOT NULL
+        ), ranked_results AS (
+            SELECT id, user_id, submitted_at, type_code, scale_name, scale_version, scoring_version,
+                COUNT(*) OVER (PARTITION BY user_id) AS assessment_count,
+                ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY submitted_at DESC, id DESC) AS result_rank
+            FROM extracted_results
+            WHERE REGEXP_LIKE(type_code, '^[EI][SN][TF][JP]$', 'c')
+        )
+    </sql>
+    <sql id="employeeColumns">
+        u.id AS user_id, u.user_name, u.real_name, u.role_code, u.user_status,
+        u.department_id, COALESCE(d.department_name, '未分配部门') AS department_name,
+        u.position_id, COALESCE(j.position_name, '未分配岗位') AS position_name,
+        p.hire_date, COALESCE(p.employment_status, 'ACTIVE') AS employment_status,
+        COALESCE(r.assessment_count, 0) AS assessment_count, r.id AS latest_result_id,
+        r.type_code, r.submitted_at, r.scale_name, r.scale_version, r.scoring_version
+    </sql>
+    <sql id="employeeJoins">
+        FROM sys_user u
+        LEFT JOIN employee_profile p ON p.user_id = u.id
+        LEFT JOIN sys_department d ON d.id = u.department_id
+        LEFT JOIN sys_position j ON j.id = u.position_id
+        LEFT JOIN ranked_results r ON r.user_id = u.id AND r.result_rank = 1
+        WHERE u.audit_status = 'APPROVED'
+    </sql>
+    <sql id="scopeFilters">
+        <if test="query.departmentId != null">
+            <choose><when test="query.departmentId == 0">AND u.department_id IS NULL</when>
+                <otherwise>AND u.department_id = #{query.departmentId}</otherwise></choose>
+        </if>
+        <if test="query.positionId != null">
+            <choose><when test="query.positionId == 0">AND u.position_id IS NULL</when>
+                <otherwise>AND u.position_id = #{query.positionId}</otherwise></choose>
+        </if>
+        <if test="query.employmentStatus != 'ALL'">AND COALESCE(p.employment_status, 'ACTIVE') = #{query.employmentStatus}</if>
+        <if test="query.assessmentStatus == 'COMPLETED'">AND r.id IS NOT NULL</if>
+        <if test="query.assessmentStatus == 'NOT_COMPLETED'">AND r.id IS NULL</if>
+        <if test="query.typeCode != null">AND r.type_code = #{query.typeCode}</if>
+    </sql>
+    <select id="selectGroups" resultType="com.personnel.entity.TalentGroupDO">
+        <include refid="latestAssessments"/>
+        SELECT u.department_id, COALESCE(d.department_name, '未分配部门') AS department_name, r.type_code,
+            COUNT(*) AS employee_count, SUM(COALESCE(r.assessment_count, 0)) AS assessment_count
+        <include refid="employeeJoins"/>
+        <include refid="scopeFilters"/>
+        GROUP BY u.department_id, d.department_name, r.type_code
+        ORDER BY u.department_id, r.type_code
+    </select>
+    <select id="selectEmployeePage" resultType="com.personnel.entity.TalentEmployeeDO">
+        <include refid="latestAssessments"/>
+        SELECT <include refid="employeeColumns"/>
+        <include refid="employeeJoins"/>
+        <include refid="scopeFilters"/>
+        ORDER BY u.id DESC
+    </select>
+    <select id="selectEmployee" resultType="com.personnel.entity.TalentEmployeeDO">
+        <include refid="latestAssessments"/>
+        SELECT <include refid="employeeColumns"/>
+        <include refid="employeeJoins"/>
+        AND u.id = #{id}
+    </select>
+</mapper>

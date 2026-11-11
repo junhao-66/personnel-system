@@ -1,0 +1,274 @@
+{
+  "name": "OEJTS OpenJung 中文参考 · 非商业毕设",
+  "version": "openjung-zh-4d7917d",
+  "sourceTitle": "OEJTS 1.2 的 OpenJung 中文适配（非官方MBTI）",
+  "author": "Eric Jorgenson / Open Psychometrics；中文适配：OpenJung contributors",
+  "sourceUrl": "https://github.com/openjung/core/tree/4d7917df1857e2dc04adc47fab3ecc0c8db10612",
+  "accessedDate": "2026-10-29",
+  "license": "CC BY-NC-SA 4.0",
+  "licenseEvidence": "仅用于本项目非商业毕业设计。题目及中文适配按CC BY-NC-SA4.0署名、非商业、相同方式共享。详见third-party/oejts/ATTRIBUTION.md和LICENSE-DATA.txt。",
+  "chineseVersion": "OpenJung zh @ 4d7917df1857e2dc04adc47fab3ecc0c8db10612；未独立完成中文信效度验证",
+  "translationEvidence": "保留上游32题中文左右端描述；将上游问题标题合并到两端显示。Q12上游为past/future，与原PDFpresent/future不同，未擅自修订。",
+  "scoringVersion": "OEJTS_OPENJUNG_32_V1",
+  "scoringEvidence": "对应固定提交src/scoring.ts：8题/维，右端I/N/T/P；总和>24取右端，否则左端E/S/F/J。本系统保存为EI/SN/TF/JP第一端刻度，保留两位小数而非上游整数。弱倾向提示属于系统附加，不复制上游置信度指标。",
+  "retentionPolicy": "本地非商业毕设展示数据；答辩结束后由项目维护者清理。",
+  "contact": "毕业设计项目维护者",
+  "questions": [
+    {
+      "key": "oejts1",
+      "leftText": "你如何记录任务？ 制定清单",
+      "rightText": "你如何记录任务？ 依靠记忆",
+      "dimension": "JP",
+      "highPole": "P",
+      "weight": 1
+    },
+    {
+      "key": "oejts2",
+      "leftText": "你如何看待新信息？ 愿意相信",
+      "rightText": "你如何看待新信息？ 持怀疑态度",
+      "dimension": "TF",
+      "highPole": "T",
+      "weight": 1
+    },
+    {
+      "key": "oejts3",
+      "leftText": "你对独处有什么感受？ 独处时感到无聊",
+      "rightText": "你对独处有什么感受？ 需要独处时间",
+      "dimension": "EI",
+      "highPole": "I",
+      "weight": 1
+    },
+    {
+      "key": "oejts4",
+      "leftText": "你如何看待现状？ 接受事物的本来面目",
+      "rightText": "你如何看待现状？ 对现状不满足",
+      "dimension": "SN",
+      "highPole": "N",
+      "weight": 1
+    },
+    {
+      "key": "oejts5",
+      "leftText": "你如何整理空间？ 保持房间整洁",
+      "rightText": "你如何整理空间？ 随手放置东西",
+      "dimension": "JP",
+      "highPole": "P",
+      "weight": 1
+    },
+    {
+      "key": "oejts6",
+      "leftText": "你如何看待逻辑思维？ 认为\"像机器人\"是侮辱",
+      "rightText": "你如何看待逻辑思维？ 追求机械般的思维",
+      "dimension": "TF",
+      "highPole": "T",
+      "weight": 1
+    },
+    {
+      "key": "oejts7",
+      "leftText": "你的能量状态如何？ 精力充沛",
+      "rightText": "你的能量状态如何？ 平静温和",
+      "dimension": "EI",
+      "highPole": "I",
+      "weight": 1
+    },
+    {
+      "key": "oejts8",
+      "leftText": "你喜欢什么类型的考试？ 喜欢选择题",
+      "rightText": "你喜欢什么类型的考试？ 喜欢论述题",
+      "dimension": "SN",
+      "highPole": "N",
+      "weight": 1
+    },
+    {
+      "key": "oejts9",
+      "leftText": "你如何形容自己的生活方式？ 有条理",
+      "rightText": "你如何形容自己的生活方式？ 随性混乱",
+      "dimension": "JP",
+      "highPole": "P",
+      "weight": 1
+    },
+    {
+      "key": "oejts10",
+      "leftText": "你如何应对批评？ 容易受伤",
+      "rightText": "你如何应对批评？ 脸皮厚",
+      "dimension": "TF",
+      "highPole": "T",
+      "weight": 1
+    },
+    {
+      "key": "oejts11",
+      "leftText": "你在什么环境下工作最好？ 在团队中表现最佳",
+      "rightText": "你在什么环境下工作最好？ 独自工作表现最佳",
+      "dimension": "EI",
+      "highPole": "I",
+      "weight": 1
+    },
+    {
+      "key": "oejts12",
+      "leftText": "你的时间焦点在哪里？ 关注过去",
+      "rightText": "你的时间焦点在哪里？ 关注未来",
+      "dimension": "SN",
+      "highPole": "N",
+      "weight": 1
+    },
+    {
+      "key": "oejts13",
+      "leftText": "你何时制定计划？ 提前规划",
+      "rightText": "你何时制定计划？ 最后一刻才计划",
+      "dimension": "JP",
+      "highPole": "P",
+      "weight": 1
+    },
+    {
+      "key": "oejts14",
+      "leftText": "你希望从他人那里得到什么？ 渴望他人的爱",
+      "rightText": "你希望从他人那里得到什么？ 渴望他人的尊重",
+      "dimension": "TF",
+      "highPole": "T",
+      "weight": 1
+    },
+    {
+      "key": "oejts15",
+      "leftText": "聚会让你感觉如何？ 因聚会而兴奋",
+      "rightText": "聚会让你感觉如何？ 因聚会而疲惫",
+      "dimension": "EI",
+      "highPole": "I",
+      "weight": 1
+    },
+    {
+      "key": "oejts16",
+      "leftText": "在群体中，你倾向于... 融入群体",
+      "rightText": "在群体中，你倾向于... 与众不同",
+      "dimension": "SN",
+      "highPole": "N",
+      "weight": 1
+    },
+    {
+      "key": "oejts17",
+      "leftText": "你如何做决定？ 做出承诺",
+      "rightText": "你如何做决定？ 保留选择",
+      "dimension": "JP",
+      "highPole": "P",
+      "weight": 1
+    },
+    {
+      "key": "oejts18",
+      "leftText": "你想擅长什么？ 想擅长帮助他人",
+      "rightText": "你想擅长什么？ 想擅长修理事物",
+      "dimension": "TF",
+      "highPole": "T",
+      "weight": 1
+    },
+    {
+      "key": "oejts19",
+      "leftText": "在交谈中，你更倾向于... 话比较多",
+      "rightText": "在交谈中，你更倾向于... 更善于倾听",
+      "dimension": "EI",
+      "highPole": "I",
+      "weight": 1
+    },
+    {
+      "key": "oejts20",
+      "leftText": "讲故事时，你会... 描述发生了什么",
+      "rightText": "讲故事时，你会... 描述这意味着什么",
+      "dimension": "SN",
+      "highPole": "N",
+      "weight": 1
+    },
+    {
+      "key": "oejts21",
+      "leftText": "你何时完成任务？ 立即完成工作",
+      "rightText": "你何时完成任务？ 拖延",
+      "dimension": "JP",
+      "highPole": "P",
+      "weight": 1
+    },
+    {
+      "key": "oejts22",
+      "leftText": "你如何做决定？ 跟随内心",
+      "rightText": "你如何做决定？ 跟随理性",
+      "dimension": "TF",
+      "highPole": "T",
+      "weight": 1
+    },
+    {
+      "key": "oejts23",
+      "leftText": "周末你更喜欢做什么？ 喜欢外出活动",
+      "rightText": "周末你更喜欢做什么？ 喜欢待在家里",
+      "dimension": "EI",
+      "highPole": "I",
+      "weight": 1
+    },
+    {
+      "key": "oejts24",
+      "leftText": "学习新事物时，你想要什么？ 想要细节",
+      "rightText": "学习新事物时，你想要什么？ 想要大局观",
+      "dimension": "SN",
+      "highPole": "N",
+      "weight": 1
+    },
+    {
+      "key": "oejts25",
+      "leftText": "你如何应对新情况？ 提前准备",
+      "rightText": "你如何应对新情况？ 即兴发挥",
+      "dimension": "JP",
+      "highPole": "P",
+      "weight": 1
+    },
+    {
+      "key": "oejts26",
+      "leftText": "道德的基础是什么？ 道德基于同情",
+      "rightText": "道德的基础是什么？ 道德基于正义",
+      "dimension": "TF",
+      "highPole": "T",
+      "weight": 1
+    },
+    {
+      "key": "oejts27",
+      "leftText": "你的自然音量如何？ 自然而然大声说话",
+      "rightText": "你的自然音量如何？ 很难大声喊叫",
+      "dimension": "EI",
+      "highPole": "I",
+      "weight": 1
+    },
+    {
+      "key": "oejts28",
+      "leftText": "你如何获取知识？ 经验主义",
+      "rightText": "你如何获取知识？ 理论主义",
+      "dimension": "SN",
+      "highPole": "N",
+      "weight": 1
+    },
+    {
+      "key": "oejts29",
+      "leftText": "什么更能驱动你？ 努力工作",
+      "rightText": "什么更能驱动你？ 尽情玩乐",
+      "dimension": "JP",
+      "highPole": "P",
+      "weight": 1
+    },
+    {
+      "key": "oejts30",
+      "leftText": "你如何看待情感？ 重视情感",
+      "rightText": "你如何看待情感？ 对情感感到不自在",
+      "dimension": "TF",
+      "highPole": "T",
+      "weight": 1
+    },
+    {
+      "key": "oejts31",
+      "leftText": "你对成为焦点有什么感受？ 喜欢表演",
+      "rightText": "你对成为焦点有什么感受？ 避免公开演讲",
+      "dimension": "EI",
+      "highPole": "I",
+      "weight": 1
+    },
+    {
+      "key": "oejts32",
+      "leftText": "什么问题最让你感兴趣？ 想知道\"谁/什么/何时\"",
+      "rightText": "什么问题最让你感兴趣？ 想知道\"为什么\"",
+      "dimension": "SN",
+      "highPole": "N",
+      "weight": 1
+    }
+  ]
+}

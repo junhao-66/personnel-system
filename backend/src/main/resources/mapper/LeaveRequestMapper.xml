@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.personnel.mapper.LeaveRequestMapper">
+    <select id="selectApprovedPeriods" resultType="com.personnel.entity.LeaveRequestDO">
+        SELECT user_id, start_time, end_time FROM leave_request
+        WHERE status = 'APPROVED' AND start_time &lt; #{end} AND end_time &gt; #{start}
+        AND user_id IN <foreach collection="userIds" item="userId" open="(" separator="," close=")">#{userId}</foreach>
+        ORDER BY user_id, start_time, end_time
+    </select>
+    <select id="countOverlapping" resultType="long">
+        SELECT COUNT(id) FROM leave_request WHERE user_id = #{userId}
+        AND status IN ('PENDING', 'APPROVED') AND start_time &lt; #{end} AND end_time &gt; #{start}
+    </select>
+    <select id="selectLeavePage" resultType="com.personnel.entity.LeaveRequestDO">
+        SELECT l.id, l.enterprise_id, l.user_id, l.department_id, l.leave_type, l.start_time,
+        l.end_time, l.reason, l.status, l.reviewer_id, l.review_comment, l.reviewed_at, l.create_time, l.update_time
+        FROM leave_request l
+        <if test="managerId != null">
+            INNER JOIN sys_user u ON u.id = l.user_id
+            INNER JOIN sys_department d ON d.id = u.department_id
+        </if>
+        WHERE 1 = 1
+        <if test="userId != null">AND l.user_id = #{userId}</if>
+        <if test="managerId != null">AND d.is_enabled = 1 AND l.user_id != #{managerId}
+            AND CASE WHEN d.manager_user_id = l.user_id THEN d.self_approver_user_id ELSE d.manager_user_id END = #{managerId}</if>
+        <if test="status != null">AND l.status = #{status}</if>
+        ORDER BY l.create_time DESC, l.id DESC
+    </select>
+    <update id="reviewPending">
+        UPDATE leave_request l
+        INNER JOIN sys_user u ON u.id = l.user_id
+        INNER JOIN sys_department d ON d.id = u.department_id
+        SET l.status = #{status}, l.reviewer_id = #{reviewerId}, l.review_comment = #{comment},
+            l.reviewed_at = #{now}, l.update_time = #{now}
+        WHERE l.id = #{id} AND l.status = 'PENDING' AND l.user_id != #{reviewerId}
+          AND CASE WHEN d.manager_user_id = l.user_id THEN d.self_approver_user_id ELSE d.manager_user_id END = #{reviewerId}
+          AND d.is_enabled = 1
+    </update>
+</mapper>

@@ -1,0 +1,218 @@
+/* White enterprise workspace enhancement. Unslop by Damir Sokolovsky, CC BY 4.0.
+   https://github.com/heydamir/unslop */
+:root .hr-shell.hr-shell {
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(rgb(39 91 84 / 3%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(39 91 84 / 3%) 1px, transparent 1px),
+    radial-gradient(circle at 82% 12%, rgb(78 201 164 / 10%), transparent 28%), var(--bg-page);
+  background-size:
+    48px 48px,
+    48px 48px,
+    auto,
+    auto;
+}
+
+:root .hr-shell .app-frame {
+  border-color: rgb(255 255 255 / 86%);
+  background: rgb(250 249 252 / 94%);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 24px 70px rgb(38 35 54 / 10%);
+}
+
+:root .hr-shell:not(.nav-idle):not(.nav-forward):not(.nav-backward) .main-content > main {
+  animation: page-enter 380ms var(--ease-out) both;
+}
+
+:root .hr-shell .top-navigation a,
+:root .hr-shell .top-navigation a:hover,
+:root .hr-shell .top-navigation a.is-active {
+  background: transparent;
+  box-shadow: none;
+}
+
+:root .hr-shell.nav-forward .main-content > main {
+  animation: page-push-forward 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+:root .hr-shell.nav-backward .main-content > main {
+  animation: page-push-backward 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+:root
+  .hr-shell
+  :is(.topbar, .icon-rail, .expanded-menu, .topbar-search, .todo-trigger, .section-navigation) {
+  border-color: rgb(255 255 255 / 82%);
+  background: rgb(255 255 255 / 86%);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 10px 30px rgb(38 35 54 / 7%);
+  backdrop-filter: blur(8px) saturate(108%);
+}
+
+:root .hr-shell :is(.el-card, .data-panel, .panel, .leave-panel, .record-panel) {
+  border-color: rgb(61 82 78 / 9%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 90%),
+    0 14px 36px rgb(38 35 54 / 6%);
+}
+
+:root .hr-shell :is(.el-input__wrapper, .el-select__wrapper, .el-textarea__inner) {
+  border: 1px solid rgb(61 82 78 / 10%);
+  background: rgb(255 255 255 / 92%);
+  box-shadow: inset 0 1px 0 #fff;
+}
+
+:root
+  .hr-shell
+  :is(.el-input__wrapper.is-focus, .el-select__wrapper.is-focused, .el-textarea__inner:focus) {
+  border-color: rgb(57 156 145 / 48%);
+  box-shadow:
+    0 0 0 3px rgb(57 156 145 / 10%),
+    inset 0 1px 0 #fff;
+}
+
+:root
+  .hr-shell
+  :is(.el-button, .action, .todo-trigger, .section-navigation > a, .section-navigation > button) {
+  transition:
+    color 160ms var(--ease-out),
+    background-color 160ms var(--ease-out),
+    border-color 160ms var(--ease-out),
+    box-shadow 160ms var(--ease-out),
+    transform 160ms var(--ease-out);
+}
+
+:root .hr-shell :is(.el-button, .action, .todo-trigger):hover {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 8px 20px rgb(38 35 54 / 9%);
+}
+
+:root
+  .hr-shell
+  :is(
+    .el-button,
+    .action,
+    .todo-trigger,
+    .section-navigation > a,
+    .section-navigation > button
+  ):active {
+  transform: scale(0.98);
+}
+
+:root .hr-shell .el-table__body tr {
+  transition: background-color 150ms var(--ease-out);
+}
+:root .hr-shell .el-table__body tr:hover > td.el-table__cell {
+  background: rgb(57 156 145 / 5%);
+}
+
+:root :is(.el-popper, .el-dialog, .el-message-box, .el-drawer) {
+  border: 1px solid rgb(255 255 255 / 80%) !important;
+  background: rgb(255 255 255 / 88%) !important;
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 24px 64px rgb(38 35 54 / 14%) !important;
+  backdrop-filter: blur(12px) saturate(108%);
+}
+
+:root .hr-shell :focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 3px;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes page-push-forward {
+  from {
+    opacity: 0.82;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes page-push-backward {
+  from {
+    opacity: 0.82;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root .hr-shell .main-content > main {
+    animation: none;
+  }
+  :root .hr-shell.nav-forward .main-content > main,
+  :root .hr-shell.nav-backward .main-content > main {
+    animation: none;
+  }
+  :root .hr-shell *,
+  :root .hr-shell *::before,
+  :root .hr-shell *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+:root .hr-shell .page-heading a {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 32px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  color: #534d5a;
+  background: #f4f2f7;
+  box-shadow: inset 0 0 0 1px rgb(61 82 78 / 6%);
+  text-decoration: none;
+  transition:
+    color 300ms var(--ease-out),
+    background-color 300ms var(--ease-out),
+    box-shadow 300ms var(--ease-out),
+    transform 300ms var(--ease-out);
+}
+
+:root .hr-shell .page-heading a:hover {
+  color: #247a73;
+  background: #eeedf2;
+  box-shadow:
+    inset 0 0 0 1px rgb(36 122 115 / 12%),
+    0 8px 18px rgb(38 35 54 / 7%);
+  transform: translate3d(0, -2px, 0);
+}
+
+:root .hr-shell .page-heading a:active {
+  transform: translate3d(0, 0, 0) scale(0.98);
+}
+
+@media (max-width: 760px) {
+  :root .hr-shell.hr-shell {
+    background-size:
+      32px 32px,
+      32px 32px,
+      auto,
+      auto;
+  }
+  :root .hr-shell .app-frame {
+    backdrop-filter: none;
+  }
+}

@@ -1,0 +1,56 @@
+server:
+  port: 8080
+  forward-headers-strategy: none
+personnel:
+  ai:
+    mode: ${PERSONNEL_AI_MODE:MOCK}
+    external-enabled: ${PERSONNEL_AI_EXTERNAL_ENABLED:false}
+    endpoint: ${PERSONNEL_AI_ENDPOINT:https://api.openai.com/v1/responses}
+    model: ${PERSONNEL_AI_MODEL:}
+    api-key: ${PERSONNEL_AI_API_KEY:}
+    timeout-seconds: 8
+  static-cache:
+    enabled: ${PERSONNEL_STATIC_CACHE_ENABLED:true}
+    ttl-seconds: 300
+    retry-seconds: 30
+    namespace: ${PERSONNEL_STATIC_CACHE_NAMESPACE:personnel:static:v1:}
+  report:
+    pdf-font: ${PERSONNEL_REPORT_PDF_FONT:}
+  jwt-secret: ${PERSONNEL_JWT_SECRET:}
+  rate-limit:
+    enabled: true
+    max-buckets: 20000
+    window-seconds: 60
+    registration-window-seconds: 3600
+    credential-ip-limit: 60
+    credential-account-limit: 10
+    registration-ip-limit: 10
+    registration-account-limit: 3
+    read-limit: 240
+    write-limit: 60
+    auto-save-limit: 180
+    attendance-limit: 10
+    leave-limit: 30
+    content-limit: 10
+    pdf-limit: 10
+    ai-limit: 10
+spring:
+  data:
+    redis:
+      connect-timeout: 500ms
+      timeout: 500ms
+  application:
+    name: personnel-system
+  profiles:
+    active: local
+  jackson:
+    default-property-inclusion: non_null
+  mvc:
+    problemdetails:
+      enabled: true
+  sql:
+    init:
+      mode: always
+      encoding: UTF-8
+      schema-locations: classpath:schema.sql,classpath:account-schema.sql,classpath:attendance-leave-schema.sql,classpath:audit-schema.sql,classpath:growth-template-schema.sql,classpath:job-preference-schema.sql,classpath:system-settings-schema.sql
+      data-locations: classpath:data.sql,classpath:oejts-data.sql,classpath:graph-data.sql

@@ -1,0 +1,120 @@
+const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright')
+const { spawn } = require('node:child_process')
+const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict')
+async function run() {
+  const base = 'http://127.0.0.1:5214'
+  const server = spawn(process.execPath, [path.join(__dirname, 'node_modules/vite/bin/vite.js'), '--host', '127.0.0.1', '--port', '5214', '--strictPort'], { cwd: __dirname, windowsHide: true, stdio: 'ignore' })
+  let browser
+  try {
+    for(let i=0;i<100;i++) {
+      if(server.exitCode!==null) throw new Error('Vite exited')
+      try { if((await fetch(base)).ok) break } catch {}
+      if(i===99) throw new Error('Vite timeout')
+      await new Promise(resolve=>setTimeout(resolve,200))
+    }
+    browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true})
+    const page=await browser.newPage({viewport:{width:1440,height:1000}}); page.setDefaultTimeout(10000)
+    const errors=[], checks=[]; page.on('pageerror',error=>errors.push(error.message))
+    const fixture=JSON.parse(fs.readFileSync(path.join(__dirname,'../graph-example.json'),'utf8'))
+    const original={...fixture,id:1,status:'PUBLISHED',contentHash:'original-hash'}
+    const versions=[structuredClone(original)]; let fail=true, submitted=[], publishCalls=0
+    const user={id:9,userName:'test-admin',realName:'测试管理员',roleCode:'ADMIN',auditStatus:'APPROVED',userStatus:'ENABLED'}
+    await page.addInitScript(user=>{localStorage.setItem('accessToken','test-token');localStorage.setItem('currentUser',JSON.stringify(user))},user)
+    await page.route(base+'/api/**',async route=>{
+      const req=route.request(), url=new URL(req.url()); let data=null
+      if(url.pathname==='/api/user/me') data=user
+      else if(url.pathname==='/api/admin/knowledge-graph' && req.method()==='GET') data=versions
+      else if(url.pathname==='/api/admin/knowledge-graph' && req.method()==='POST') {
+        const body=req.postDataJSON(); submitted.push(body)
+        if(fail) return route.fulfill({json:{code:400,msg:'模拟保存失败，请重试'}})
+        data={...body,id:2,status:'DRAFT',contentHash:'new-hash'}; versions.unshift(data)
+      } else if(url.pathname==='/api/admin/knowledge-graph/2/publish') {publishCalls++; versions[0].status='PUBLISHED'}
+      await route.fulfill({json:{code:200,msg:'success',data}})
+    })
+    await page.goto(base+'/admin/knowledge-graph')
+    await page.getByRole('button',{name:'编辑为新版本',exact:true}).click()
+    const editor=page.locator('.graph-editor'), search=editor.getByPlaceholder('搜索节点或关系标识、名称、说明')
+    const dialog=()=>page.locator('.el-dialog:visible')
+    // Element form labels are rendered directly inside the label element.
+    const field=(name,tag='input')=>dialog().locator('.el-form-item').filter({hasText:new RegExp('^'+name)}).locator(tag)
+    const apply=()=>dialog().getByRole('button',{name:'应用到编辑副本',exact:true}).click()
+    await editor.getByRole('button',{name:'保存为新版本草稿',exact:true}).click()
+    await page.getByText('请输入1至64位的新版本号，仅支持字母、数字、点、下划线和短横线',{exact:true}).waitFor()
+    assert.equal(submitted.length,0); checks.push('版本号必填且不发送无效请求')
+    await editor.getByPlaceholder('例如 graph-v2').fill('graph-editor-v2')
+    await search.fill('I')
+    const nodeRow=editor.locator('.el-table__row').filter({has:page.locator('td').getByText('I',{exact:true})})
+    await nodeRow.getByRole('button',{name:'编辑节点',exact:true}).click()
+    assert.equal(await field('节点标识').isDisabled(),true)
+    await field('节点名称').fill('内向偏好编辑测试')
+    const nodeType=dialog().locator('.el-form-item').filter({hasText:/^节点类型/}).locator('.el-select')
+    await nodeType.click(); await page.getByRole('option',{name:'行动建议',exact:true}).click(); await apply()
+    await page.getByText('规则引用的节点不能变更类型，请通过完整版本导入调整规则',{exact:true}).waitFor()
+    await nodeType.click(); await page.getByRole('option',{name:'偏好',exact:true}).click(); await apply()
+    checks.push('规则引用节点不能变更类型')
+    await nodeRow.getByText('内向偏好编辑测试',{exact:true}).waitFor(); checks.push('稳定标识不可改且可修改节点资料')
+    await nodeRow.getByRole('button',{name:'删除',exact:true}).click()
+    await page.getByText('节点仍被关系或规则引用，请先处理引用',{exact:true}).waitFor(); checks.push('阻止删除有引用节点')
+    await search.fill(''); await editor.getByRole('button',{name:'新增节点',exact:true}).click()
+    await field('节点标识').fill('I'); await field('节点名称').fill('重复'); await field('节点说明','textarea').fill('重复测试'); await apply()
+    await page.getByText('节点标识已存在',{exact:true}).waitFor(); checks.push('重复节点标识被拦截')
+    await field('节点标识').fill('new-action'); await field('节点名称').fill('新增行动'); await apply()
+    await search.fill('new-action'); await editor.getByText('新增行动',{exact:true}).waitFor(); checks.push('新增节点保留有效来源')
+    await editor.getByRole('tab',{name:/关系（/}).click(); await search.fill('')
+    await editor.getByRole('button',{name:'新增关系',exact:true}).click()
+    await field('关系标识').fill('new-edge')
+    for(const [name,option] of [['起点节点','新增行动 (new-action)'],['终点节点',`${fixture.nodes.find(n=>n.id==='I').label} (I)`]]) {
+      // The edited node label is used by the endpoint selector.
+      const select=dialog().locator('.el-form-item').filter({hasText:new RegExp('^'+name)}).locator('.el-select')
+      await select.click()
+      const popupId=await select.getByRole('combobox').getAttribute('aria-controls')
+      await page.locator(`[id="${popupId}"]`).getByRole('option',{name:name==='终点节点'?'内向偏好编辑测试 (I)':option,exact:true}).click()
+    }
+    await field('关系说明','textarea').fill('表单新增关系说明'); await apply()
+    await search.fill('new-edge'); await editor.getByText('new-edge',{exact:true}).waitFor(); checks.push('新增关系选择真实节点端点')
+    await editor.getByRole('tab',{name:/节点（/}).click(); await search.fill('new-action')
+    await editor.locator('.el-table__row').filter({hasText:'new-action'}).getByRole('button',{name:'删除',exact:true}).click()
+    await page.getByText('节点仍被关系或规则引用，请先处理引用',{exact:true}).waitFor(); checks.push('新增关系同样保护节点引用')
+    await editor.getByRole('tab',{name:/关系（/}).click(); await search.fill('new-edge')
+    await editor.locator('.el-table__row').filter({hasText:'new-edge'}).getByRole('button',{name:'删除',exact:true}).click()
+    await page.getByRole('button',{name:'删除',exact:true}).last().click()
+    await editor.getByRole('tab',{name:/节点（/}).click(); await search.fill('new-action')
+    await editor.locator('.el-table__row').filter({hasText:'new-action'}).getByRole('button',{name:'删除',exact:true}).click()
+    await page.getByRole('button',{name:'删除',exact:true}).last().click(); checks.push('无引用关系及节点可确认删除')
+    await editor.getByRole('tab',{name:/关系（/}).click()
+    const protectedEdge=fixture.rules[0].edgeIds[0]; await search.fill(protectedEdge)
+    await editor.locator('.el-table__row').filter({has:page.getByText(protectedEdge,{exact:true})}).getByRole('button',{name:'删除',exact:true}).click()
+    await page.getByText('关系仍被规则引用，请通过完整版本导入调整规则',{exact:true}).waitFor(); checks.push('规则引用关系不可删除')
+    await editor.locator('.el-table__row').filter({has:page.getByText(protectedEdge,{exact:true})}).getByRole('button',{name:'编辑关系',exact:true}).click()
+    await field('关系说明','textarea').fill('规则路径保留，仅编辑说明'); await apply(); checks.push('规则引用关系可修改说明')
+    await editor.getByRole('button',{name:'保存为新版本草稿',exact:true}).click()
+    await page.getByText('模拟保存失败，请重试',{exact:true}).waitFor()
+    assert.equal(await editor.getByPlaceholder('例如 graph-v2').inputValue(),'graph-editor-v2')
+    assert.equal(submitted.length,1); assert.equal(publishCalls,0); checks.push('失败保留完整副本且不自动发布')
+    assert.equal(submitted[0].nodes.find(n=>n.id==='I').label,'内向偏好编辑测试')
+    assert.equal(submitted[0].edges.find(e=>e.id===protectedEdge).explanation,'规则路径保留，仅编辑说明')
+    assert.deepEqual(submitted[0].sources,fixture.sources); assert.deepEqual(submitted[0].rules,fixture.rules)
+    assert.equal(submitted[0].nodes.length,fixture.nodes.length); assert.equal(submitted[0].edges.length,fixture.edges.length)
+    assert.equal(submitted[0].id,undefined); assert.deepEqual(versions[0],original); checks.push('提交新版本数据并保持来源规则与原版不变')
+    fail=false
+    await editor.getByRole('button',{name:'保存为新版本草稿',exact:true}).click()
+    await page.getByText('新版本草稿已保存，核查后可发布',{exact:true}).waitFor()
+    await page.locator('.manage-page > .panel .el-table__row').filter({hasText:'graph-editor-v2'}).getByText('待发布',{exact:true}).waitFor()
+    assert.equal(await editor.count(),0); assert.deepEqual(versions[1],original); checks.push('重试保存后新草稿可见且旧版本不变')
+    const draftRow=page.locator('.el-table__row').filter({hasText:'graph-editor-v2'})
+    await draftRow.getByRole('button',{name:'发布',exact:true}).click(); await page.getByRole('button',{name:'确认',exact:true}).click()
+    await draftRow.getByText('已发布',{exact:true}).waitFor(); assert.equal(publishCalls,1); checks.push('新版本沿用单独确认发布流程')
+    await draftRow.getByRole('button',{name:'编辑为新版本',exact:true}).click()
+    await editor.getByRole('button',{name:'退出编辑',exact:true}).click(); await page.getByRole('button',{name:'继续编辑',exact:true}).click()
+    assert.equal(await editor.count(),1); checks.push('放弃编辑前确认可取消')
+    await page.getByRole('link',{name:'查看已发布关系图',exact:true}).click()
+    await page.getByRole('button',{name:'继续编辑',exact:true}).click()
+    assert.match(page.url(),/\/admin\/knowledge-graph$/); assert.equal(await editor.count(),1)
+    checks.push('切换路由前确认并可保留编辑副本')
+    await page.setViewportSize({width:390,height:844}); assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)); checks.push('移动端无整页横向溢出')
+    await editor.getByRole('button',{name:'退出编辑',exact:true}).click(); await page.getByRole('button',{name:'放弃修改',exact:true}).click()
+    assert.equal(await editor.count(),0); assert.deepEqual(errors,[]); checks.push('退出不提交且无脚本错误')
+    console.log(JSON.stringify({passed:checks.length,checks},null,2))
+  } finally {if(browser) await browser.close();server.kill()}
+}
+run().catch(error=>{console.error(error);process.exitCode=1})
