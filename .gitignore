@@ -32,3 +32,11 @@ Thumbs.db
 frontend/all-pages-layout-audit.cjs
 frontend/section-capsule-qa.cjs
 frontend/design-qa.md
+
+# Local progress and acceptance notes
+*-VALIDATION.md
+FEATURE-ACCEPTANCE.md
+REQUIREMENTS-PROGRESS.md
+design-qa.md
+frontend/BUILD-OPTIMIZATION.md
+功能说明与测试清单.md
